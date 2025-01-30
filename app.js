@@ -34,11 +34,31 @@ async function run() {
     await client.close();
   }
 }
-run().catch(console.dir);
+//run().catch(console.dir);
  
+async function getData() {
 
-app.get('/', function (req, res) {
-  res.sendFile('index.html');
+  await client.connect();
+  let collection = await client.db("pizza-app-database").collection("pizza-app-sauces");
+
+  let results = await collection.find({}).toArray();
+    // .limit(50)
+    // .toArray();
+  
+  console.log(results);
+
+  return results;
+
+}
+
+app.get('/read', async function (req, res) {
+  let getDataResults = await getData();
+
+  console.log(getDataResults);
+
+  res.render('sauces',
+    { sauceData : getDataResults} );
+
 
 })
 
