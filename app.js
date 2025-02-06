@@ -62,6 +62,34 @@ app.get('/read', async function (req, res) {
 
 })
 
+app.post('/insert', async (req, res) => {
+//app.get('/insert', async (req,res)=> {
+
+  console.log('in/insert');
+
+  // let newSauce = req.body.new Sauce; //only for POST, GET is req.paramas?
+  let newSauce = req.body.myName;
+  console.log(newSauce);
+
+  //connect to db,
+  await client.connect();
+  //point to the collection
+  await client
+    .db("pizza-app-database")
+    .collection("pizza-app-sauces")
+    .insertOne({ dominos: newSauce});
+
+  res.redirect('/read');
+  
+})
+
+//begin all my middlewares
+
+app.get('/', function (req, res) {
+  res.sendFile('index.html');
+
+})
+
 app.post('/saveMyName', (req,res)=>{
   console.log('did we hit the post endpoint?'); 
 
